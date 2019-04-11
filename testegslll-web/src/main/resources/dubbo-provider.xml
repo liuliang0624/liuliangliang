@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<description>DUBBO服务提供方配置</description>
+	<!-- 应用配置，用于配置当前应用信息，不管该应用是提供者还是消费者 -->
+	<!-- <dubbo:application name="icop-singlecard-template-provider" /> -->
+	<!-- 协议配置，用于配置提供服务的协议信息，协议由提供方指定，消费方被动接受 -->
+	<dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" />
+	<!-- 服务提供方调用的超时时间。默认不配置，则以服务提供方的超时时间为准-->
+	<dubbo:provider retries="0" timeout="${dubbo.provider.timeout}" />
+	<!-- 使用zookeeper作为服务注册中心 -->
+	<dubbo:registry protocol="zookeeper" address="${zookeeper.addr}" />
+	<!-- 服务配置，用于暴露一个服务，定义服务的元信息，一个服务可以用多个协议暴露，一个服务也可以注册到多个注册中心 -->
+	<!-- <dubbo:service ref="projectAPIService" interface="com.yyjz.icop.share.api.service.ProjectAPIService" /> -->
+	<!-- 如需使用dubbo服务监控必须加入该配置 -->
+	<dubbo:monitor protocol="registry"/>
+</beans>

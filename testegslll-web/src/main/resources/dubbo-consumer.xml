@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<description>dubbo公共配置</description>
+	<!-- 应用配置，用于配置当前应用信息，不管该应用是提供者还是消费者 -->
+	<dubbo:application name="icop-singlecard-template-dubbo-consumer" />
+	<!-- 服务应用方调用的超时时间。默认不配置，则以服务提供方的超时时间为准。check为false表示延迟加载dubbo依赖的服务-->
+	<dubbo:consumer retries="0" timeout="${dubbo.consumer.timeout}" check="false"/>
+	<!-- 使用zookeeper作为服务注册中心 -->
+	<dubbo:registry protocol="zookeeper" address="${zookeeper.addr}" />
+	<!-- 像引用spring的bean服务一样引用dubbo提供的接口，用于预发布和生产环境-->
+	<!-- <dubbo:reference id="messagePushService" interface="com.yyjz.icop.message.MessagePushService"/> -->
+	<!-- dubbo直连方式，只用于开发或测试阶段 -->
+	<!--<dubbo:reference id="messagePushService" interface="com.yyjz.icop.message.MessagePushService"
+					 url="dubbo://123.56.19.206:20882" check="false"/>-->
+	<!-- 如需使用dubbo服务监控必须加入该配置 -->
+	<dubbo:monitor protocol="registry"/>
+	
+	<dubbo:reference interface="com.yyjz.icop.file.service.FsAttachService" id="fsAttachService" url="${dubbo.file.url}" check="false" group="${dubbo.file.group}" />
+	<dubbo:reference interface="com.yyjz.icop.support.api.service.IBillCodeService" id="dubboBillCodeService" url="${dubbo.support.url}"  check="false"  filter="logcontext" group="${dubbo.support.group}" />
+	<dubbo:reference interface="com.yyjz.icop.support.api.service.IRegConfigAPIService" id="regConfigAPIService" check="false" url="${dubbo.support.url}" filter="logcontext" group="${dubbo.support.group}" />
+	<!-- <dubbo:reference interface="com.yyjz.icop.share.api.service.ProjectAPIService" id="projectAPIService" url="${dubbo.share.url}" check="false"  filter="logcontext" group="${dubbo.share.group}" /> -->
+	<!--<dubbo:reference interface="com.yyjz.icop.orgcenter.staff.service.StaffService" id="staffService" check="false" url="${dubbo.orgcenter.url}" filter="logcontext" group="${dubbo.orgcenter.group}" />-->
+	
+</beans>
